@@ -1,11 +1,11 @@
 from django.db import models
 
 # Create your models here.
-# from users.models import Reader,Staff
+from users.models import UserProfile
 
 class Book(models.Model):
     Title = models.CharField(('Title'), max_length=255, blank=False)
-    ISBN = models.PositiveIntegerField(('ISBN'), primary_key=True, max_length=16, blank=False)
+    ISBN = models.PositiveIntegerField(('ISBN'), primary_key=True, blank=False)
     Description = models.TextField(blank=True)
     Category = models.CharField(blank=True, max_length=15)
     edition = models.CharField(blank=True, max_length=15)
@@ -27,9 +27,9 @@ class BookReviews(models.Model):
         return self.headline
 
 class CommonInfo(models.Model):
-    ReportID = models.IntegerField(primary_key=True, max_length=10)
+    ReportID = models.IntegerField(primary_key=True)
     ReportDate = models.DateField(blank=True)
-    #reader = models.ForeignKey(Reader, on_delete=models.CASCADE)
+    reader = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
     class Meta:
@@ -37,10 +37,10 @@ class CommonInfo(models.Model):
 
 class IssueReport(CommonInfo):
     ReturnDate = models.DateField(blank=True)
-    #IssuedBy = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    IssuedBy = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name= 'IssuedBy')
 
 class LateReport(CommonInfo):
-    DaysOverDue = models.IntegerField(max_length=10)
+    DaysOverDue = models.IntegerField(blank=True)
     FinePaid = models.BooleanField(default=False)
 
 class ReserveReport(CommonInfo):

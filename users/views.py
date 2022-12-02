@@ -7,14 +7,32 @@ from .serializers import RegistrationSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 
-class registration(APIView):
+
+class UserRegistration(APIView):
     
     def post(self, request, format=None):
         serializer = RegistrationSerializer(data=request.data)
         data={}
         if serializer.is_valid():
             account=serializer.save()
+            token= Token.objects.get(user=account).key
+            data['serializer_data']=serializer.data
+            data['token']=token
+            return Response(data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class StaffRegistration(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, format=None):
+        serializer = RegistrationSerializer(data=request.data)
+        data={}
+        if serializer.is_valid():
+            account=serializer.save()
+            account.is_staff = True
+            account.save()
             token= Token.objects.get(user=account).key
             data['serializer_data']=serializer.data
             data['token']=token

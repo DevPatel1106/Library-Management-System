@@ -10,7 +10,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
-class UserProfile(AbstractBaseUser):
+class UserProfile(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True,)
     username = models.CharField(('username'), max_length=150, unique=True,error_messages={'unique': "A user with that username already exists.",} )
     is_active = models.BooleanField(default=True)
