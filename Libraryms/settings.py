@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
+    'environ',
 
     # my apps
 
@@ -146,3 +147,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.UserProfile'
 
+import environ
+env = environ.Env()
+environ.Env.read_env()
+SECRET_KEY = env("SECRET_KEY")
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = env("EMAIL")
+EMAIL_HOST_PASSWORD = env("PASSWORD")
+EMAIL_PORT = 587
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

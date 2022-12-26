@@ -8,6 +8,7 @@ urlpatterns = [
     path('register/', views.UserRegistration.as_view(), name='register'),
     path('registerstaff/', views.StaffRegistration.as_view(), name='registerstaff'),
     path('login/', obtain_auth_token, name='login'),
+    path('register/verify/', views.UserRegistration.as_view(), name='register'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
