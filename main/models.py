@@ -28,7 +28,7 @@ class BookReviews(models.Model):
 
 class CommonInfo(models.Model):
     ReportID = models.IntegerField(primary_key=True)
-    ReportDate = models.DateField(blank=True)
+    ReportDate = models.DateField(null=True)
     reader = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
@@ -39,11 +39,19 @@ class IssueReport(CommonInfo):
     ReturnDate = models.DateField(blank=True)
     IssuedBy = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name= 'IssuedBy')
 
+    def __str__(self):
+        return self.Title
+
 class LateReport(CommonInfo):
     DaysOverDue = models.IntegerField(blank=True)
     FinePaid = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.Title
+
 class ReserveReport(CommonInfo):
     ReserveTime = models.DateTimeField(blank=True)
     
+    def __str__(self):
+        return self.Title
 

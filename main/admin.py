@@ -16,8 +16,29 @@ class CustomBookReviewAdmin(admin.ModelAdmin):
     search_fields = ('book',)
     ordering = ('book',)
 
+class CustomIssueReportAdmin(admin.ModelAdmin):
+    model = IssueReport
+    list_display = ('book','reader','ReportDate','ReportID','ReturnDate','IssuedBy')
+    list_filter = ('book',)
+    search_fields = ('book',)
+    ordering = ('book',)
+
+class CustomLateReportAdmin(admin.ModelAdmin):
+    model = LateReport
+    list_display = ('book','reader','ReportDate','ReportID','DaysOverDue','FinePaid')
+    list_filter = ('book',)
+    search_fields = ('book',)
+    ordering = ('book',)
+
+class CustomReserveReportAdmin(admin.ModelAdmin):
+    model = ReserveReport
+    list_display = ('book','reader','ReportDate','ReportID','ReserveTime')
+    list_filter = ('book',)
+    search_fields = ('book',)
+    ordering = ('book',)
+
 admin.site.register(Book, CustomBookAdmin)
 admin.site.register(BookReviews, CustomBookReviewAdmin)
-# admin.site.register(IssueReport)
-# admin.site.register(LateReport)
-# admin.site.register(ReserveReport)
+admin.site.register(IssueReport, CustomIssueReportAdmin)
+admin.site.register(LateReport, CustomLateReportAdmin)
+admin.site.register(ReserveReport, CustomReserveReportAdmin)
