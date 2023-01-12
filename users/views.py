@@ -3,14 +3,15 @@ from django.shortcuts import render
 # Create your views here.
 
 from rest_framework.views import APIView
-from .serializers import RegistrationSerializer
+from .serializers import RegistrationSerializer,CodeSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated,AllowAny
 
 from django.contrib.auth.tokens import default_token_generator
-from .models import UserProfile
+from .models import UserProfile,CodeEmail
+from rest_framework.authtoken.models import Token
 
 class UserRegistration(APIView):
     permission_classes=[AllowAny]
@@ -25,22 +26,6 @@ class UserRegistration(APIView):
             return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def get(self, request):
-        user_id = request.query_params.get('user_id', '')
-        confirmation_token = request.query_params.get('confirmation_token', '')
-        print(confirmation_token+"    2")
-        try:
-            user = UserProfile.objects.get(email=user_id)
-        except UserProfile.DoesNotExist:
-            return Response('User not found', status=status.HTTP_400_BAD_REQUEST)
-        
-        if default_token_generator.check_token(user, confirmation_token) == False:
-            return Response('Token is invalid or expired. Please request another confirmation email by signing in.', status=status.HTTP_400_BAD_REQUEST)
-        
-        user.is_active = True
-        user.save()
-        return Response('Email successfully confirmed')
-
 
 class StaffRegistration(APIView):
     permission_classes = [IsAuthenticated]
@@ -56,3 +41,20 @@ class StaffRegistration(APIView):
             data['token']=token
             return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CodeView(APIView): 
+    permission_classes=[AllowAny]
+    def post(self, request, format=None):
+        serializer = CodeSerializer(data=request.data)
+        if serializer.is_valid():
+            if CodeEmail.objects.filter(code = serializer.validated_data['code'] , email= serializer.validated_data['email']).exists()  :
+                user=UserProfile.objects.get(email=serializer.validated_data['email'])
+                user.is_active = True
+                user.save()
+                return Response('Email successfully confirmed')
+            else:
+                return Response({'message':'not equal'})
+        else:
+            print(serializer.errors)
+            return Response({'message': 'Serializer is not valid'})

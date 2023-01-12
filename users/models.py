@@ -31,6 +31,9 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, app_label):
         return True
 
+class CodeEmail(models.Model):
+    code = models.IntegerField()
+    email = models.EmailField(max_length=254)
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
