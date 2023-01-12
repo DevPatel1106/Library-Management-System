@@ -4,8 +4,8 @@ from django.db import models
 from users.models import UserProfile
 
 class Book(models.Model):
-    Title = models.CharField(('Title'), max_length=255, blank=False)
     ISBN = models.PositiveIntegerField(('ISBN'), primary_key=True, blank=False)
+    Title = models.CharField(('Title'), max_length=255, blank=False)
     Description = models.TextField(blank=True)
     Category = models.CharField(blank=True, max_length=15)
     edition = models.CharField(blank=True, max_length=15)
