@@ -11,6 +11,7 @@ urlpatterns = [
     path('latereport/', views.LateReport.as_view(), name='latereports'),
     path('reservereport/', views.ReserveReport.as_view(), name='reservereports'),
     path('LateReportDetail/<int:pk>/', views.LateReportDetail.as_view(), name='LateReportOfBook'),
+    path('payment/',views.pay, name='pay')
 ]
 
 

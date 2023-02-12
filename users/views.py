@@ -58,3 +58,10 @@ class CodeView(APIView):
         else:
             print(serializer.errors)
             return Response({'message': 'Serializer is not valid'})
+
+
+class User_logout(APIView): 
+    permission_classes=[IsAuthenticated]
+    def get(request):
+        request.user.auth_token.delete()
+        return Response('User Logged out successfully')

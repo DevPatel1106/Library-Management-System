@@ -9,6 +9,7 @@ urlpatterns = [
     path('registerstaff/', views.StaffRegistration.as_view(), name='registerstaff'),
     path('login/', obtain_auth_token, name='login'),
     path('register/verify/', views.CodeView.as_view(), name='register'),
+    path('^logout/', views.User_logout.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
