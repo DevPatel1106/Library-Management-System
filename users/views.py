@@ -59,9 +59,10 @@ class CodeView(APIView):
             print(serializer.errors)
             return Response({'message': 'Serializer is not valid'})
 
+from django.contrib.auth import logout
 
 class User_logout(APIView): 
     permission_classes=[IsAuthenticated]
-    def get(request):
-        request.user.auth_token.delete()
+    def get(self,request):
+        logout(request)
         return Response('User Logged out successfully')

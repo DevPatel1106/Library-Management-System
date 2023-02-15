@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-olw@0&%w8m8tg!1z(%05-1y#72iofe+ulsa&ah%a(y72yxz@h^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1' ,'dev1106.pythonanywhere.com',]
 
 
 # Application definition
@@ -147,7 +147,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'staticfiles/'
+
+#added by me.....................................................................................
+import os
+STATIC_ROOT = "/home/Dev1106/Library-Management-System/staticfiles"
+#added by me .....................................................................................
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -195,3 +200,14 @@ LOGOUT_REDIRECT_URL = '/'
 
 RAZORPAY_API_KEY = ''
 RAZORPAY_API_SECRET_KEY = ''
+
+#Changed swagger's security settings for taking token as login credintials
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS' : {
+        'Bearer' : {
+            'type' : 'apiKey',
+            'name' : 'Authorization',
+            'in' : 'header'
+        }
+    }
+}
